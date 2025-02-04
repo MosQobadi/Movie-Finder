@@ -12,6 +12,8 @@ import ErrorMessage from "./components/Error";
 import MovieDetails from "./components/MovieDetails";
 import Box1 from "./components/Box1";
 
+const key = "8b0622c";
+
 export default function App() {
   const [movies, setMovies] = useState([]);
   const [watched, setWatched] = useState(() => {
@@ -29,7 +31,7 @@ export default function App() {
         setLoading(true);
         setErrorMessage("");
         const res = await fetch(
-          `http://www.omdbapi.com/?apikey=${process.env.REACT_APP_IMDB_API_KEY}&s=${query}`
+          `http://www.omdbapi.com/?apikey=${key}&s=${query}`
         );
 
         if (!res.ok) throw new Error("Something went wrong!");
