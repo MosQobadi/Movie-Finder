@@ -4,7 +4,7 @@ import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
 import WatchedMovie from "./WatchedMovie";
 
-const WatchedMoviesList = ({ watched, onDelete }) => {
+const WatchedMoviesList = ({ watched = [], onDelete }) => {
   return (
     <>
       {watched.length < 5 ? (
