@@ -4,13 +4,13 @@ import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
 import WatchedMovie from "./WatchedMovie";
 
-const WatchedMoviesList = ({ watched = [], onDelete }) => {
+const WatchedMoviesList = ({ watched, onDelete }) => {
   return (
     <>
-      {watched.length < 5 ? (
+      {watched?.length < 5 ? (
         <>
           {/* <div className="list-movies"> */}
-          {watched.map((movie) => (
+          {watched?.map((movie) => (
             <WatchedMovie
               key={movie.imdbID}
               movie={movie}
