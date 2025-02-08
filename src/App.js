@@ -26,6 +26,8 @@ export default function App() {
   const [selectedMovie, setSelectedMovie] = useState(null);
 
   useEffect(() => {
+    console.log("Testing for Vercel working");
+
     async function fetchMovies() {
       try {
         setLoading(true);
