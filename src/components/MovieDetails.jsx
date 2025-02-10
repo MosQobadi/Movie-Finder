@@ -5,7 +5,7 @@ import Rating from "./Rating";
 const MovieDetails = ({ selectedMovie, onClose, onAddWatched, watched }) => {
   const [movie, setMovie] = useState({});
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [, setError] = useState("");
   const [userRating, setUserRating] = useState("");
 
   const isWatched = watched
