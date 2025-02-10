@@ -12,7 +12,7 @@ import ErrorMessage from "./components/Error";
 import MovieDetails from "./components/MovieDetails";
 import Box1 from "./components/Box1";
 
-const key = "8b0622c";
+// const key = "8b0622c";
 
 export default function App() {
   const [movies, setMovies] = useState([]);
@@ -26,20 +26,19 @@ export default function App() {
   const [selectedMovie, setSelectedMovie] = useState(null);
 
   useEffect(() => {
-    console.log("Testing for Vercel working");
-
     async function fetchMovies() {
       try {
         setLoading(true);
         setErrorMessage("");
         const res = await fetch(
-          `https://www.omdbapi.com/?apikey=${key}&s=${query}`
+          `https://www.omdbapi.com/?apikey=${process.env.REACT_APP_IMDB_API_KEY}&s=${query}`
         );
 
         if (!res.ok) throw new Error("Something went wrong!");
 
         const data = await res.json();
 
+        setErrorMessage("");
         if (data.Response === "False") throw new Error("Movie not found");
 
         setMovies(data.Search);

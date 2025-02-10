@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import Loading from "./Loading";
 import Rating from "./Rating";
 
-const key = "8b0622c";
-
 const MovieDetails = ({ selectedMovie, onClose, onAddWatched, watched }) => {
   const [movie, setMovie] = useState({});
   const [loading, setLoading] = useState(false);
@@ -37,7 +35,7 @@ const MovieDetails = ({ selectedMovie, onClose, onAddWatched, watched }) => {
         setLoading(true);
         setError("");
         const res = await fetch(
-          `https://www.omdbapi.com/?apikey=${key}&i=${selectedMovie}`
+          `https://www.omdbapi.com/?apikey=${process.env.REACT_APP_IMDB_API_KEY}&i=${selectedMovie}`
         );
 
         if (!res.ok) throw new Error("Something went wrong!");
