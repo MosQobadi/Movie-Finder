@@ -9,7 +9,7 @@ import Search from "./components/Search";
 import Loading from "./components/Loading";
 import ErrorMessage from "./components/Error";
 import MovieDetails from "./components/MovieDetails";
-import Box1 from "./components/Box1";
+import Box1 from "./components/Box";
 import { useFetchMovies } from "./hooks/useFetchMovies";
 
 export default function App() {
