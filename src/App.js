@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Navbar from "./components/Navbar";
 import Main from "./components/Main";
 import NumResults from "./components/NumResults";
@@ -11,12 +11,9 @@ import ErrorMessage from "./components/Error";
 import MovieDetails from "./components/MovieDetails";
 import Box1 from "./components/Box";
 import { useFetchMovies } from "./hooks/useFetchMovies";
+import { useLocalStorage } from "./hooks/useLocalStorage";
 
 export default function App() {
-  const [watched, setWatched] = useState(() => {
-    const storedValue = localStorage.getItem("watched");
-    return JSON.parse(storedValue) || [];
-  });
   const [query, setQuery] = useState("");
   const [selectedMovie, setSelectedMovie] = useState(null);
 
@@ -25,9 +22,7 @@ export default function App() {
     handleCloseDetails
   );
 
-  useEffect(() => {
-    localStorage.setItem("watched", JSON.stringify(watched));
-  }, [watched]);
+  const { watched, setWatched } = useLocalStorage();
 
   const handleSelectMovie = (id) => {
     setSelectedMovie((selectedId) => (selectedId === id ? null : id));

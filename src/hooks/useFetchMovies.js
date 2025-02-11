@@ -30,8 +30,9 @@ export function useFetchMovies(query, callback) {
         setLoading(false);
       }
     }
+
     if (query.length > 2) fetchMovies();
-  }, [query, callback]);
+  }, [query]);
 
   return { movies, loading, errorMessage };
 }
