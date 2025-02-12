@@ -9,27 +9,26 @@ function reducer(state, action) {
   switch (action.type) {
     case "dataFetched":
       return { ...state, movies: action.payload };
-
+    case "inProgress":
+      return { ...state, status: "loading" };
     default:
       break;
   }
 }
 
 export function useFetchMovies(query, callback) {
-  const [movies, setMovies] = useState([]);
+  // const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const [state, dispatch] = useReducer(reducer, initialState);
-
-  console.log(state);
+  const [{ movies, status }, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
     callback?.();
 
     async function fetchMovies() {
       try {
-        setLoading(true);
+        dispatch({ type: "inProgress" });
         setErrorMessage("");
         const res = await fetch(
           `https://www.omdbapi.com/?apikey=${process.env.REACT_APP_IMDB_API_KEY}&s=${query}`
@@ -39,12 +38,10 @@ export function useFetchMovies(query, callback) {
 
         const data = await res.json();
 
-        dispatch({ type: "dataFetched", payload: data });
-
         setErrorMessage("");
         if (data.Response === "False") throw new Error("Movie not found");
 
-        setMovies(data.Search);
+        dispatch({ type: "dataFetched", payload: data.Search });
       } catch (error) {
         setErrorMessage(error.message);
       } finally {
