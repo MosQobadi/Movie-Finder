@@ -1,8 +1,9 @@
-import { useEffect, useReducer, useState } from "react";
+import { useEffect, useReducer } from "react";
 
 const initialState = {
   movies: [],
-  status: "loading",
+  status: "done",
+  errorMessage: "",
 };
 
 function reducer(state, action) {
@@ -13,46 +14,45 @@ function reducer(state, action) {
       return { ...state, status: "loading" };
     case "dataRecieved":
       return { ...state, status: "done" };
+    case "error":
+      return { ...state, errorMessage: action.payload };
     default:
   }
 }
 
 export function useFetchMovies(query, callback) {
-  // const [movies, setMovies] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-
-  const [{ movies, status }, dispatch] = useReducer(reducer, initialState);
+  const [{ movies, status, errorMessage }, dispatch] = useReducer(
+    reducer,
+    initialState
+  );
 
   useEffect(() => {
     callback?.();
 
     async function fetchMovies() {
       try {
-        setErrorMessage("");
+        dispatch({ type: "inProgress" });
+        dispatch({ type: "error", payload: "" });
         const res = await fetch(
           `https://www.omdbapi.com/?apikey=${process.env.REACT_APP_IMDB_API_KEY}&s=${query}`
         );
-        dispatch({ type: "inProgress" });
 
         if (!res.ok) throw new Error("Something went wrong!");
 
         const data = await res.json();
 
-        setErrorMessage("");
         if (data.Response === "False") throw new Error("Movie not found");
 
         dispatch({ type: "dataFetched", payload: data.Search });
       } catch (error) {
-        setErrorMessage(error.message);
+        dispatch({ type: "error", payload: error.message });
       } finally {
         dispatch({ type: "dataRecieved" });
-        setLoading(false);
       }
     }
 
     if (query.length > 2) fetchMovies();
   }, [query]);
 
-  return { movies, loading, errorMessage, status };
+  return { movies, errorMessage, status };
 }
