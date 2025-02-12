@@ -17,7 +17,7 @@ export default function App() {
   const [query, setQuery] = useState("");
   const [selectedMovie, setSelectedMovie] = useState(null);
 
-  const { movies, loading, errorMessage } = useFetchMovies(
+  const { movies, loading, errorMessage, status } = useFetchMovies(
     query,
     handleCloseDetails
   );
@@ -49,8 +49,8 @@ export default function App() {
       </Navbar>
       <Main>
         <Box1>
-          {loading && <Loading />}
-          {!loading && !errorMessage && (
+          {status === "loading" && <Loading />}
+          {status === "done" && !errorMessage && (
             <MoviesList movies={movies} onSelect={handleSelectMovie} />
           )}
           {errorMessage && <ErrorMessage message={errorMessage} />}

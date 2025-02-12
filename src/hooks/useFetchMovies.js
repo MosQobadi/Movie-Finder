@@ -11,8 +11,9 @@ function reducer(state, action) {
       return { ...state, movies: action.payload };
     case "inProgress":
       return { ...state, status: "loading" };
+    case "dataRecieved":
+      return { ...state, status: "done" };
     default:
-      break;
   }
 }
 
@@ -28,11 +29,11 @@ export function useFetchMovies(query, callback) {
 
     async function fetchMovies() {
       try {
-        dispatch({ type: "inProgress" });
         setErrorMessage("");
         const res = await fetch(
           `https://www.omdbapi.com/?apikey=${process.env.REACT_APP_IMDB_API_KEY}&s=${query}`
         );
+        dispatch({ type: "inProgress" });
 
         if (!res.ok) throw new Error("Something went wrong!");
 
@@ -45,6 +46,7 @@ export function useFetchMovies(query, callback) {
       } catch (error) {
         setErrorMessage(error.message);
       } finally {
+        dispatch({ type: "dataRecieved" });
         setLoading(false);
       }
     }
@@ -52,5 +54,5 @@ export function useFetchMovies(query, callback) {
     if (query.length > 2) fetchMovies();
   }, [query]);
 
-  return { movies, loading, errorMessage };
+  return { movies, loading, errorMessage, status };
 }
